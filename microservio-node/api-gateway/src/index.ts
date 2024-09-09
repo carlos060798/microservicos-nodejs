@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import { Request } from 'express';
+import { matchesGlob } from 'path';
 const app = express();
 
 dotenv.config();
@@ -8,30 +10,40 @@ app.use(express.json());
 const port = process.env.PORT || 3000;
 
 app.post('/api/v1', async(req, res) => {
-   const { event} = req.body 
+   const { event,data:requestData} = req.body 
+   console.log({
+    msg: 'Event sending',
+    event});
+  
 
-    if (!event) {
-        return  res.status(400).send('Event is required');
-    }
-    if (event.trim()=== 'PRODUCT_GET.ALL') 
-      try{
-      const {data}= await axios.get('http://localhost:3001/api/products/all')
-    
+    if (!event)  return  res.status(400).send('Event is required'); 
 
-    return res.status(200).json({
-        message: 'Event processed',
-        data
-    });
     
-    }catch(error){
-        console.error(error);
-        return res.status(500).send('Internal Server Error');
-    }
+        try {
+            const { data } = await axios.post('http://localhost:3001/events',{
+                event,
+                requestData
+
+            });
+            return res.status(200).send(data);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send(
+                {
+                    msg: 'internal server error',
+                    error
+                }
+            );
+        }
+    
+    
+  
+     
+
+    
 });
 
-app.post('/api/v1', (req, res) => {
-    res.send('API Gateway v1');
-});
+
 
 app.listen(port, () => {
     console.log(`API Gateway running on port ${port}`);
