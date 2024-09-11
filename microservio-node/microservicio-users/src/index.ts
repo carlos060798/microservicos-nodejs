@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.PORT
 app.use(cors());
 app.use(express.json());
-app.use("/api", userRoutes);
+app.use("/users", userRoutes);
 
 app.listen(port, () => {
   console.log(`Microservice Product running on port ${port}`);

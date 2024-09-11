@@ -19,7 +19,7 @@ const users: Iuser[] = [
 ];
 export const allProducts = (req: Request, res: Response) => {
     return res.json({
-        message: 'Products'
-        , users
+        message: 'All users',
+        users
     });
 }

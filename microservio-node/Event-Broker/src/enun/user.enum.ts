@@ -1,0 +1,8 @@
+
+export enum  userEnum {
+    USER_CREATED = 'CREATE_USER',
+    USER_UPDATED = 'UPDATE_USER',
+    USER_DELETED = 'DELETE_USER',
+    GET_USERS = 'GET_USERS',
+    GET_USER = 'GET_USER'
+}

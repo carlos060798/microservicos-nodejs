@@ -1,8 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import axios from 'axios';
-import { Request } from 'express';
-import { matchesGlob } from 'path';
 const app = express();
 
 dotenv.config();
@@ -13,7 +11,9 @@ app.post('/api/v1', async(req, res) => {
    const { event,data:requestData} = req.body 
    console.log({
     msg: 'Event sending',
-    event});
+    event,
+    data: requestData
+    });
   
 
     if (!event)  return  res.status(400).send('Event is required'); 
@@ -22,7 +22,7 @@ app.post('/api/v1', async(req, res) => {
         try {
             const { data } = await axios.post('http://localhost:3001/events',{
                 event,
-                requestData
+                data:requestData
 
             });
             return res.status(200).send(data);
